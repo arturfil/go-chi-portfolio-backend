@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"portfolio-api/controllers"
+	"portfolio-api/middlewares"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -24,9 +25,12 @@ func Routes() http.Handler {
 	// Project Rotues
 	router.Get("/api/v1/projects", controllers.GetProjects)
 	router.Get("/api/v1/projects/project/{id}", controllers.GetProjectById)
-	router.Post("/api/v1/projects/project", controllers.CreateProject)
-	router.Put("/api/v1/projects/project/{id}", controllers.UpdateProject)
-	router.Delete("/api/v1/projects/project/{id}", controllers.DeleteProject)
+	router.Route("/api/v1/projects/project", func(router chi.Router) {
+		router.Use(middlewares.IsAuthorized)
+		router.Post("/", controllers.CreateProject)
+		router.Put("/{id}", controllers.UpdateProject)
+		router.Delete("/{id}", controllers.DeleteProject)
+	})
 
 	// Auth Routes
 	router.Post("/api/v1/auth/signup", controllers.Singup)

@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS projects (
   "id" uuid PRIMARY KEY,
   "author" varchar NOT NULL,
   "url" varchar NOT NULL,
+  "name" varchar NOT NULL,
   "description" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now())

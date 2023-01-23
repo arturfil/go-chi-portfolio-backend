@@ -7,15 +7,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"portfolio-api/models"
 )
 
 type envelope map[string]interface{}
-
-type JsonResponse struct {
-	Error   bool        `json:"error"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
-}
 
 type Message struct {
 	Infolog  *log.Logger
@@ -69,7 +64,7 @@ func ErrorJSON(w http.ResponseWriter, err error, status ...int) {
 	if len(status) > 0 {
 		statusCode = status[0]
 	}
-	var payload JsonResponse
+	var payload models.JsonResponse
 	payload.Error = true
 	payload.Message = err.Error()
 	WriteJSON(w, statusCode, payload)

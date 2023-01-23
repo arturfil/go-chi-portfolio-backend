@@ -63,7 +63,6 @@ func UpdateProject(w http.ResponseWriter, r *http.Request) {
 		helpers.MessageLogs.Errorlog.Println(err)
 		return
 	}
-
 }
 
 // DELETE/api/v1/projects/project/:id

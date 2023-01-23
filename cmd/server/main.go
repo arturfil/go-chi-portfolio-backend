@@ -14,16 +14,16 @@ func main() {
 	cfg.Port = port
 
 	dsn := os.Getenv("DSN")
-	db, err := db.ConnectPostgres(dsn)
+	dbConn, err := db.ConnectPostgres(dsn)
 	if err != nil {
 		log.Fatal("Cannot connect to database", err)
 	}
 
-	defer db.DB.Close()
+	defer dbConn.DB.Close()
 
 	App := &application.Application{
 		Config: cfg,
-		Models: models.New(db.DB),
+		Models: models.New(dbConn.DB),
 	}
 
 	err = App.Serve()

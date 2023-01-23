@@ -12,12 +12,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-type jsonResponse struct {
-	Error   bool        `json:"error"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
-}
-
+// this struct is fine to be here since we only use it here
 type tokenResponse struct {
 	Token string       `json:"token"`
 	User  *models.User `json:"user"`
@@ -55,7 +50,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 	// setup creds & jsonResponse
 	var creds credentials
-	var payload jsonResponse
+	var payload models.JsonResponse
 	// read Json
 	err := helpers.ReadJSON(w, r, &creds)
 	if err != nil {
