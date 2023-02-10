@@ -14,7 +14,8 @@ func GetProjects(w http.ResponseWriter, r *http.Request) {
 	var projects models.Project
 	all, err := projects.GetAllProjects()
 	if err != nil {
-		h.Errorlog.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		// h.Errorlog.Println(err)
 		return
 	}
 	helpers.WriteJSON(w, http.StatusOK, all)

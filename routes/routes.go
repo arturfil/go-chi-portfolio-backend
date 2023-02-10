@@ -35,6 +35,9 @@ func Routes() http.Handler {
 	// Auth Routes
 	router.Post("/api/v1/auth/signup", controllers.Singup)
 	router.Post("/api/v1/auth/login", controllers.Login)
+	router.Route("/api/v1/auth/user", func(router chi.Router) {
+		router.Get("/bytoken", controllers.GetUserByToken)
+	})
 
 	return router
 }

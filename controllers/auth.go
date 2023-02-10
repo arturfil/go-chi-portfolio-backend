@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"portfolio-api/helpers"
@@ -62,7 +63,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	// get user if creds are valid
 	user, err := mod.User.GetByEmail(creds.Username)
 	if err != nil {
-		helpers.ErrorJSON(w, errors.New("invalid no user found"))
+		helpers.ErrorJSON(w, errors.New("invalid, no user found"))
 		return
 	}
 	// check if valid
@@ -95,5 +96,45 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	err = helpers.WriteJSON(w, http.StatusOK, response)
 	if err != nil {
 		helpers.MessageLogs.Errorlog.Println(err)
+	}
+}
+
+// GetUserByToken - this method will serve to get the user once a token is provided. This
+// is really usefull when ever you want to preserve login state in the front-end
+func GetUserByToken(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Reached [GetUserByToken] method")
+	var myKey = []byte(os.Getenv("SECRET_KEY"))
+	type TokenClaim struct {
+		Authorized bool   `json:"authorized"`
+		Email      string `json:"email"`
+		Exp        int    `json:"exp"`
+		Name       string `json:"name"`
+		jwt.StandardClaims
+	}
+
+	claims := &TokenClaim{}
+	token, err := jwt.ParseWithClaims(r.Header["Authorization"][0], claims, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("there was an error")
+		}
+		return myKey, nil
+	})
+	if token.Valid {
+		if err != nil {
+			helpers.MessageLogs.Infolog.Print(err)
+		}
+
+		if err != nil {
+			helpers.MessageLogs.Infolog.Print(err)
+			return
+		}
+
+		user, err := mod.User.GetByEmail(claims.Email)
+		if err != nil {
+			helpers.MessageLogs.Infolog.Print(err)
+		}
+		user.Password = ""
+		helpers.WriteJSON(w, http.StatusOK, user)
+		return
 	}
 }
