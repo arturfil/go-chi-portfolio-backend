@@ -1,15 +1,15 @@
 curl -X POST http://localhost:8080/api/v1/auth/login \
-   -H 'Content-Type: application/json' \
-   -d '{"email":"arturo@test.com","password":"Password123"}'
+-H 'Content-Type: application/json' \
+-d '{"email":"arturo@test.com","password":"Password123"}'
 
 curl -X POST http://localhost:8080/api/v1/auth/signup \
-   -H 'Content-Type: application/json' \
-   -d '{
-      "email":"arturo@test.com",
-      "first_name": "Arturo", 
-      "last_name": "Filio", 
-      "password":"Password123"
-   }'
+-H 'Content-Type: application/json' \
+-d '{
+   "email":"arturo@test.com",
+   "first_name": "Arturo", 
+   "last_name": "Filio", 
+   "password":"Password123"
+}'
 
 curl -X POST http://localhost:8080/api/v1/projects/project \
    -H 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJlbWFpbCI6ImFydHVyb0B0ZXN0LmNvbSIsImV4cCI6MTY3NTAzNzY4NSwibmFtZSI6IkFydHVybyJ9.C2kjiLPm1sBI_B_oWy45pzrMIOerGvyTLIaRtX3Vp9s' \
